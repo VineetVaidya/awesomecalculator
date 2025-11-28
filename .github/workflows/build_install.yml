@@ -51,4 +51,4 @@ jobs:
 
       - name: Smoke test calculator
         run: |
-          python -c "import calculator; print('Add(10 + 20) =', calculator.add(10, 20))"
+           python -c "from calculator import Calculator; calc = Calculator(); print('Add(10 + 20) =', calc.Add(10, 20))"
