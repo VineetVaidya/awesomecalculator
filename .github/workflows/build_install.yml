@@ -21,7 +21,6 @@ jobs:
       - name: Install build tool
         run: pip install build
 
-      # This uses pyproject.toml to build the .whl file in dist/
       - name: Build wheel
         run: python -m build
 
@@ -52,7 +51,4 @@ jobs:
 
       - name: Smoke test calculator
         run: |
-          python - <<EOF
-          import calculator
-          print("Add(10 + 20) =", calculator.add(10, 20))
-EOF
+          python -c "import calculator; print('Add(10 + 20) =', calculator.add(10, 20))"
