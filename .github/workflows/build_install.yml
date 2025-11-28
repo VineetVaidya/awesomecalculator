@@ -1,1 +1,58 @@
+name: Step 3 - Build and Install AwesomeCalculator Wheel
 
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build_wheel:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tool
+        run: pip install build
+
+      # This uses pyproject.toml to build the .whl file in dist/
+      - name: Build wheel
+        run: python -m build
+
+      - name: Upload wheel artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: awesomecalculator-wheel
+          path: dist/*.whl
+
+  install_wheel:
+    needs: build_wheel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download wheel artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: awesomecalculator-wheel
+          path: dist
+
+      - name: Install wheel
+        run: pip install dist/*.whl
+
+      - name: Smoke test calculator
+        run: |
+          python - <<EOF
+          import calculator
+          print("Add(10 + 20) =", calculator.add(10, 20))
+EOF
