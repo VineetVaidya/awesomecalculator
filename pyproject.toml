@@ -1,5 +1,5 @@
 [project]
-name = "VineetVaidya-awesomecalculator"
+name = "awesomecalculator"
 version = "1.0.0"
 description = "Calc stuff"
 readme = "README.md"
